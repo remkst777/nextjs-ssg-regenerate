@@ -1,7 +1,6 @@
 import Head from "next/head";
-import fs from "fs";
 
-export default function Home({ exampleJson }) {
+export default function Home({ data }) {
   return (
     <div className="container">
       <Head>
@@ -15,16 +14,16 @@ export default function Home({ exampleJson }) {
         </h1>
       </main>
 
-      <div>{exampleJson}</div>
+      <div>Tut.by page: {data.length} bytes</div>
     </div>
   );
 }
 
 export const getStaticProps = async () => {
-  const exampleJson = fs.readFileSync("public/db.json", "utf-8");
+  const data = await fetch("https://tut.by").then(x => x.text());
 
   return {
-    props: { exampleJson },
+    props: { data },
     unstable_revalidate: 15,
   };
 };
